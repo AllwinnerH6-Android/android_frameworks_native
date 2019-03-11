@@ -457,7 +457,7 @@ void InputReader::processEventsLocked(const RawEvent* rawEvents, size_t count) {
             //processEventsForDeviceLocked(deviceId, rawEvent, batchSize);
             convertEvent(rawEvent,batchSize);
             if(batchSize > 0) {
-                int32_t convertdeviceId = mConvertEventBuffer[0].deviceId;
+                int32_t convertdeviceId = mConvertEventBuffer[batchSize-1].deviceId;
                 processEventsForDeviceLocked(convertdeviceId, mConvertEventBuffer, batchSize);
             }
 
@@ -2620,7 +2620,7 @@ void KeyboardInputMapper::process(const RawEvent* rawEvent) {
     case EV_KEY: {
         bool   find = false;
         bool   down = false;
-        bool   currentindex = 0;
+        int   currentindex = 0;
 
         if(mIsRepeatMode){
             if(rawEvent->value != 0){

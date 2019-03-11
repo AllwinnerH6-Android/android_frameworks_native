@@ -72,6 +72,9 @@ FramebufferSurface::FramebufferSurface(HWComposer& hwc, int disp,
                                        GRALLOC_USAGE_HW_RENDER |
                                        GRALLOC_USAGE_HW_COMPOSER);
     const auto& activeConfig = mHwc.getActiveConfig(disp);
+    if (activeConfig == NULL) {
+        return;
+    }
     mConsumer->setDefaultBufferSize(activeConfig->getWidth(),
             activeConfig->getHeight());
     mConsumer->setMaxAcquiredBufferCount(
