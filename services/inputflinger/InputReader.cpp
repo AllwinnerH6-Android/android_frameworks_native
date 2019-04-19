@@ -1659,16 +1659,15 @@ void CursorButtonAccumulator::process(const RawEvent* rawEvent) {
 
 uint32_t CursorButtonAccumulator::getButtonState() const {
     uint32_t result = 0;
-    char val[PROPERTY_VALUE_MAX] = {};
-    property_get("ro.product.platform", val, "");
     if (mBtnLeft) {
         result |= AMOTION_EVENT_BUTTON_PRIMARY;
     }
     if (mBtnRight) {
-        if(!strncmp(val, "homlet", strlen("homlet")))
-            result |= AMOTION_EVENT_BUTTON_BACK;
-        else
-            result |= AMOTION_EVENT_BUTTON_SECONDARY;
+#if defined(TARGET_PLATFORM_HOMLET) || defined(TARGET_PLATFORM_AUTO)
+        result |= AMOTION_EVENT_BUTTON_BACK;
+#else
+        result |= AMOTION_EVENT_BUTTON_SECONDARY;
+#endif
     }
     if (mBtnMiddle) {
         result |= AMOTION_EVENT_BUTTON_TERTIARY;
